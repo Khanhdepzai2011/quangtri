@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nguyễn Quang Trí 10/2 — Bảng tuần hoàn hóa học</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden;background:#050c11;color:#eafcff;font-family:Inter,system-ui,Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer}
+.app{height:100vh;display:grid;grid-template-rows:58px 1fr 150px}.top{display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid #1a3039;background:#08141a;z-index:5}
+.brand{font-weight:900;letter-spacing:.12em}.brand small{display:block;color:#6f929c;font-size:9px;letter-spacing:.18em}.actions{display:flex;gap:8px}.icon{width:38px;height:38px;border:1px solid #294650;border-radius:10px;background:#0c2029;color:#dffaff}
+.main{position:relative;min-height:0;overflow:hidden}#scene{position:absolute;inset:0;width:100%;height:100%;display:block;background:radial-gradient(circle at 50% 46%,#102b35,#07151c 45%,#050c11 80%)}.grid{position:absolute;inset:0;pointer-events:none;opacity:.6;background-image:linear-gradient(rgba(71,145,160,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(71,145,160,.08) 1px,transparent 1px);background-size:42px 42px}
+.tools{position:absolute;left:16px;top:16px;display:flex;flex-direction:column;gap:9px;z-index:3}.tool{width:44px;height:44px;border-radius:50%;border:1px solid #2a4c57;background:#0a2029;color:#bfeff7;box-shadow:0 8px 28px #0008}
+.panel{position:absolute;z-index:4;left:68px;top:16px;width:min(1040px,calc(100% - 90px));max-height:calc(100% - 32px);overflow:auto;padding:16px;border:1px solid #284751;border-radius:16px;background:#07151de8;backdrop-filter:blur(14px);display:none}.panel.show{display:block}.panel h2{margin:0 0 12px;font-size:18px}
+.el{min-height:58px;border:1px solid #294650;border-radius:8px;background:#102630;color:#dffaff;padding:5px;text-align:center;transition:.15s}.el:hover,.el.active{transform:translateY(-2px);border-color:#7cecff;box-shadow:0 0 16px #32d8f533}.el .z{font-size:9px;color:#71949e;display:block;text-align:left}.el b{font-size:18px;display:block}.el small{font-size:8px;color:#83aab4;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.info{position:absolute;right:16px;top:16px;width:255px;z-index:3;padding:15px;border:1px solid #294650;border-radius:16px;background:#07151de8;backdrop-filter:blur(14px)}.symbol{font-size:44px;font-weight:900;line-height:1}.name{color:#8baab3;margin:3px 0 13px}.row{display:flex;justify-content:space-between;padding:7px 0;border-top:1px solid #183039;font-size:12px}.row strong{color:#eaffff;text-align:right;max-width:150px}.config{font-family:ui-monospace,monospace;font-size:11px;line-height:1.45;color:#bfeaf1;margin-top:8px;word-break:break-word}
+.hint{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);padding:7px 12px;border:1px solid #23424c;border-radius:999px;background:#07151ddd;color:#789aa4;font-size:11px;z-index:2;white-space:nowrap}
+.bottom{padding:10px 14px;background:linear-gradient(90deg,#090711,#100c1c,#090711);border-top:1px solid #352b50;z-index:5}.bottomCluster{display:grid;grid-template-columns:240px 1fr 300px;align-items:stretch;min-height:78px;border:1px solid #4a376c;border-radius:18px;overflow:hidden;background:linear-gradient(145deg,#141025,#0a0812);box-shadow:inset 0 1px 0 #ffffff10,0 12px 34px #0009}.card,.controls,.counts{border:0;background:transparent;border-radius:0;box-shadow:none}.card{display:flex;align-items:center;gap:12px;padding:10px 15px;border-right:1px solid #33264d}.big{font-size:32px;font-weight:900}.muted{font-size:10px;color:#8d80a5}
+.controls{display:flex;align-items:center;gap:8px;padding:10px}select,input[type=range]{accent-color:#61dff3}select{min-width:190px;padding:8px;border-radius:9px;border:1px solid #294650;background:#08171e;color:#e7fbff}.ctrl{width:38px;height:38px;border:1px solid #294650;border-radius:9px;background:#0c2029;color:#dffaff}.speed{font-size:10px;color:#7d9ba4}.range{flex:1}
+.counts{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;align-items:center}.count b{font-size:20px;display:block}.count #cp{color:#9aa3a8}.count #cn{color:#ff4f5f}.count #ce{color:#4fdcff}.count span{font-size:9px;color:#75939d}
+@media(max-width:900px){.app{grid-template-rows:55px 1fr 185px}.info{width:205px}.bottom{grid-template-columns:1fr 1fr;grid-template-rows:auto auto}.card,.controls,.counts{grid-column:1/-1}.tablePanel{width:calc(100% - 82px)}.periodic{min-width:880px}.tablePanel{overflow:auto}.tableHead{display:block}.legend{justify-content:flex-start;margin-top:10px}}
+
+.tablePanel{width:min(1220px,calc(100% - 90px));padding:18px 18px 20px}
+.tableHead{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:12px}
+.tableHead h2{margin:0;font-size:20px}.tableHead p{margin:4px 0 0;color:#6f929c;font-size:11px}
+.legend{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;max-width:650px}.legend span{font-size:9px;color:#8aaab3;display:flex;align-items:center;gap:4px}.legend i{width:8px;height:8px;border-radius:2px;display:inline-block}
+.groupLabels{display:grid;grid-template-columns:repeat(18,minmax(38px,1fr));gap:5px;margin-left:31px;margin-bottom:5px}.groupLabels span{text-align:center;font-size:9px;color:#6f929c}
+.periodic{display:grid;grid-template-columns:28px repeat(18,minmax(38px,1fr));grid-template-rows:repeat(7,64px) 12px repeat(2,64px);gap:5px}
+.period{font-size:9px;color:#668893;display:flex;align-items:center;justify-content:center}
+.el{min-width:0;min-height:64px;padding:5px 4px;border:1px solid rgba(160,220,230,.18);border-radius:9px;color:#efffff;text-align:center;position:relative;overflow:hidden;transition:transform .16s,box-shadow .16s,border-color .16s}
+.el:hover{transform:translateY(-3px) scale(1.025);z-index:5;border-color:#b8f7ff;box-shadow:0 8px 22px #0008}.el.active{border-color:#fff;box-shadow:0 0 0 2px #72e7f5,0 8px 24px #0009;transform:translateY(-2px)}
+.el .z{font-size:8px;color:#d5f8ff;display:block;text-align:left;opacity:.9}.el b{font-size:21px;line-height:1.05;display:block;margin-top:1px}.el small{font-size:8px;display:block;color:#d5f8ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.alkali{background:#e94b69}.alkaline{background:#28a8df}.transition{background:#5fcf56}.post{background:#f0ad34}.metalloid{background:#d97850}.nonmetal{background:#ee5263}.halogen{background:#c94f9e}.noble{background:#9950a9}.fblock{background:#42c85d}
+.el.cat-alkali{background:linear-gradient(145deg,#ef5672,#bd294e)}.el.cat-alkaline{background:linear-gradient(145deg,#3ab9e9,#1479ac)}.el.cat-transition{background:linear-gradient(145deg,#68d85d,#35a946)}.el.cat-post{background:linear-gradient(145deg,#ffc04e,#d68c18)}.el.cat-metalloid{background:linear-gradient(145deg,#e28a61,#b95e39)}.el.cat-nonmetal{background:linear-gradient(145deg,#f45f70,#cb3349)}.el.cat-halogen{background:linear-gradient(145deg,#d95db0,#a63683)}.el.cat-noble{background:linear-gradient(145deg,#a862b9,#75428d)}.el.cat-f{background:linear-gradient(145deg,#52d768,#28a848)}
+.placeholder{border:1px dashed #3d6670;border-radius:9px;background:#0a2028;color:#78a3ad;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:8px;line-height:1.25}
+.placeholder b{font-size:11px;color:#a9dce5}.placeholder small{font-size:7px;color:#60838d}
+
+/* === NEW VISUAL THEME: Aurora Graphite === */
+:root{--bg:#090712;--panel:#111022e8;--line:#39325c;--cyan:#7cf7ff;--violet:#9a5cff;--pink:#ff4f9a;--lime:#b7ff72}
+html,body{background:radial-gradient(circle at 12% 15%,#211438 0,#0a0813 34%,#05050b 100%);color:#f7f2ff}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.34;background:linear-gradient(115deg,transparent 0 45%,rgba(177,140,255,.08) 46%,transparent 55%),linear-gradient(25deg,transparent 0 42%,rgba(124,247,255,.05) 43%,transparent 52%);z-index:20}
+.app{grid-template-rows:66px 1fr 150px}
+.top{padding:0 24px;border-bottom:1px solid #352b50;background:linear-gradient(90deg,#090511,#17091f 55%,#260b1d);box-shadow:0 10px 35px #0008}
+.brand{font-size:17px;letter-spacing:.16em;text-align:right;color:#fff;text-shadow:0 0 18px #ff5ca866}
+.brand small{margin-top:2px;color:#d88bb0;font-size:9px;letter-spacing:.22em}
+.actions{order:-1;margin-right:auto;margin-left:0}.icon{width:40px;height:40px;border:1px solid #4b3c70;border-radius:13px;background:#151126;color:#e9ddff;box-shadow:inset 0 0 18px #8f65ff12,0 6px 20px #0007}.icon:hover{border-color:var(--pink);box-shadow:0 0 22px #ff4f9a38}
+.main{background:radial-gradient(circle at 50% 44%,#17112b 0,#0c0a16 43%,#05050b 82%)}
+#scene{background:radial-gradient(circle at 50% 45%,#201743,#0e0b18 48%,#05050b 82%)}
+.grid{opacity:.45;background-image:linear-gradient(rgba(177,140,255,.11) 1px,transparent 1px),linear-gradient(90deg,rgba(124,247,255,.08) 1px,transparent 1px);background-size:46px 46px}
+.tools{left:18px;top:18px}.tool{width:46px;height:46px;border:1px solid #4b3c70;background:linear-gradient(145deg,#19132d,#0d0b17);color:#d9caff;box-shadow:0 10px 28px #0009,0 0 18px #b18cff12}.tool:hover{border-color:var(--pink);color:#fff;transform:translateY(-2px)}
+.panel,.info{border:1px solid #40345e;border-radius:18px;background:linear-gradient(145deg,#121022f2,#090812e8);box-shadow:0 22px 55px #000b,inset 0 1px 0 #ffffff0d;backdrop-filter:blur(18px)}
+.tablePanel{padding:20px}.tableHead h2{font-size:21px;letter-spacing:.03em}.tableHead p{color:#8f83aa}
+.info{right:18px;top:18px}.symbol{color:#fff;text-shadow:0 0 22px #b18cff99}.name{color:#a99abd}.row{border-top:1px solid #2b2440}.row strong{color:#f5efff}.config{color:#bcaee0}
+.hint{border:1px solid #40345e;background:#0c0914e8;color:#9f91b9;box-shadow:0 8px 25px #0008}
+.bottomCluster{border-color:#4a376c;background:linear-gradient(145deg,#141025,#0a0812);box-shadow:inset 0 1px 0 #ffffff10,0 12px 34px #0009}.controls{display:flex;align-items:center;gap:8px;padding:10px 12px;border-right:1px solid #33264d}.counts{display:flex;align-items:center;justify-content:space-around;padding:8px 12px}.big{color:#fff;text-shadow:0 0 18px #b18cff55}.muted,.speed,.count span{color:#8d80a5}
+select{border-color:#463968;background:#0b0913;color:#f4edff}select:focus{outline:2px solid #ff4f9a44}.ctrl{border-color:#463968;background:#151026;color:#eee4ff}.ctrl:hover{border-color:var(--cyan);box-shadow:0 0 18px #ff4f9a2b}
+.range{accent-color:#ff4f9a}
+.count #cp{color:#a9b0b7}.count #cn{color:#ff536d;text-shadow:0 0 12px #ff536d66}.count #ce{color:#58ddff;text-shadow:0 0 12px #58ddff66}
+/* Distinct periodic-table tiles */
+.periodic{gap:6px}.groupLabels{gap:6px}.groupLabels span{color:#75698e}
+.el{border:1px solid #ffffff20;border-radius:12px;box-shadow:inset 0 1px 0 #ffffff22,0 5px 15px #0005}.el:hover{border-color:#fff;box-shadow:0 0 0 1px #b18cff,0 12px 28px #000b}.el.active{border-color:#fff;box-shadow:0 0 0 2px #7cf7ff,0 0 25px #7cf7ff44,0 10px 25px #000b}
+.el.cat-alkali{background:linear-gradient(150deg,#ff5f8f,#a72f64)}.el.cat-alkaline{background:linear-gradient(150deg,#58dfff,#2873b4)}.el.cat-transition{background:linear-gradient(150deg,#8fe85e,#287d55)}.el.cat-post{background:linear-gradient(150deg,#ffd05c,#a96b25)}.el.cat-metalloid{background:linear-gradient(150deg,#ff9a69,#914a58)}.el.cat-nonmetal{background:linear-gradient(150deg,#ff6b73,#9b3158)}.el.cat-halogen{background:linear-gradient(150deg,#e975ff,#7040a6)}.el.cat-noble{background:linear-gradient(150deg,#b18cff,#4e3d9c)}.el.cat-f{background:linear-gradient(150deg,#b8ff72,#348d59)}
+.placeholder{border-color:#55466f;background:linear-gradient(145deg,#171126,#0d0a17);color:#9f91b9}.placeholder b{color:#d6c9ef}
+.legend i{box-shadow:0 0 7px #fff3}
+@media(max-width:900px){.brand{font-size:13px;letter-spacing:.1em}.brand small{font-size:7px;text-align:right}.app{grid-template-rows:60px 1fr auto}.bottomCluster{grid-template-columns:1fr;}.card,.controls{border-right:0;border-bottom:1px solid #33264d}.controls{flex-wrap:wrap}.counts{min-height:70px}}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><div class="brand">NGUYỄN QUANG TRÍ 10/2 <small>BẢNG TUẦN HOÀN HÓA HỌC</small></div><div class="actions"><button class="icon" id="reset">↻</button><button class="icon" id="pause">Ⅱ</button></div></header>
+<main class="main">
+<canvas id="scene"></canvas><div class="grid"></div>
+<div class="tools"><button class="tool" id="atomBtn">◉</button><button class="tool" id="tableBtn">▦</button><button class="tool" id="aboutBtn">i</button></div>
+<section class="panel tablePanel" id="tablePanel">
+      <div class="tableHead">
+        <div><h2>Bảng tuần hoàn các nguyên tố</h2><p>118 nguyên tố · 18 nhóm · 7 chu kỳ</p></div>
+        <div class="legend">
+          <span><i class="alkali"></i>Kim loại kiềm</span><span><i class="alkaline"></i>Kiềm thổ</span>
+          <span><i class="transition"></i>Kim loại chuyển tiếp</span><span><i class="post"></i>Kim loại sau chuyển tiếp</span>
+          <span><i class="metalloid"></i>Á kim</span><span><i class="nonmetal"></i>Phi kim</span>
+          <span><i class="halogen"></i>Halogen</span><span><i class="noble"></i>Khí hiếm</span><span><i class="fblock"></i>Họ Lantan/Actini</span>
+        </div>
+      </div>
+      <div class="groupLabels" id="groupLabels"></div>
+      <div class="periodic" id="periodic"></div>
+    </section>
+<section class="panel" id="aboutPanel"><h2>Nguyên tử 3D</h2><p>Chọn bất kỳ nguyên tố nào để xem mô hình nguyên tử 3D. Kéo chuột để xoay và cuộn để zoom.</p><p>Electron <b style="color:#4fdcff">xanh dương</b> · Proton <b style="color:#9aa3a8">xám</b> · Neutron <b style="color:#ff4f5f">đỏ</b>.</p></section>
+<aside class="info"><div class="symbol" id="symbol">H</div><div class="name" id="name">Hydrogen</div>
+<div class="row"><span>Số hiệu nguyên tử</span><strong id="z">1</strong></div><div class="row"><span>Khối lượng nguyên tử</span><strong id="mass">1.008</strong></div><div class="row"><span>Proton</span><strong id="p">1</strong></div><div class="row"><span>Neutron ≈</span><strong id="n">0</strong></div><div class="row"><span>Electron</span><strong id="e">1</strong></div><div class="row"><span>Lớp electron</span><strong id="shells">1</strong></div><div class="row"><span>Công dụng</span><strong id="uses">—</strong></div><div class="config" id="config"></div></aside>
+<div class="hint" id="hint">Kéo để xoay 3D · Cuộn để zoom · Bấm ▦ để mở đủ 118 nguyên tố</div>
+</main>
+<footer class="bottom"><div class="bottomCluster">
+  <div class="card"><div class="big" id="mini">H</div><div><b id="cardName">Hydrogen</b><div class="muted">Mô hình nguyên tử 3D</div></div></div>
+  <div class="controls"><select id="select"></select><button class="ctrl" id="minus">−</button><button class="ctrl" id="plus">+</button><span class="speed">Tốc độ</span><input class="range" id="speed" type="range" min="0" max="3" step=".05" value="1"><button class="ctrl" id="auto">⟳</button></div>
+  <div class="counts"><div class="count"><b id="cp">1</b><span>PROTON</span></div><div class="count"><b id="cn">0</b><span>NEUTRON</span></div><div class="count"><b id="ce">1</b><span>ELECTRON</span></div></div>
+</div></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script>
+const E=[['H','Hydrogen',1,1.008],['He','Helium',2,4.003],['Li','Lithium',3,6.94],['Be','Beryllium',4,9.012],['B','Boron',5,10.81],['C','Carbon',6,12.011],['N','Nitrogen',7,14.007],['O','Oxygen',8,15.999],['F','Fluorine',9,18.998],['Ne','Neon',10,20.18],['Na','Sodium',11,22.99],['Mg','Magnesium',12,24.305],['Al','Aluminium',13,26.982],['Si','Silicon',14,28.085],['P','Phosphorus',15,30.974],['S','Sulfur',16,32.06],['Cl','Chlorine',17,35.45],['Ar','Argon',18,39.948],['K','Potassium',19,39.098],['Ca','Calcium',20,40.078],['Sc','Scandium',21,44.956],['Ti','Titanium',22,47.867],['V','Vanadium',23,50.942],['Cr','Chromium',24,51.996],['Mn','Manganese',25,54.938],['Fe','Iron',26,55.845],['Co','Cobalt',27,58.933],['Ni','Nickel',28,58.693],['Cu','Copper',29,63.546],['Zn','Zinc',30,65.38],['Ga','Gallium',31,69.723],['Ge','Germanium',32,72.63],['As','Arsenic',33,74.922],['Se','Selenium',34,78.971],['Br','Bromine',35,79.904],['Kr','Krypton',36,83.798],['Rb','Rubidium',37,85.468],['Sr','Strontium',38,87.62],['Y','Yttrium',39,88.906],['Zr','Zirconium',40,91.224],['Nb','Niobium',41,92.906],['Mo','Molybdenum',42,95.95],['Tc','Technetium',43,98],['Ru','Ruthenium',44,101.07],['Rh','Rhodium',45,102.906],['Pd','Palladium',46,106.42],['Ag','Silver',47,107.868],['Cd','Cadmium',48,112.414],['In','Indium',49,114.818],['Sn','Tin',50,118.71],['Sb','Antimony',51,121.76],['Te','Tellurium',52,127.6],['I','Iodine',53,126.904],['Xe','Xenon',54,131.293],['Cs','Cesium',55,132.905],['Ba','Barium',56,137.327],['La','Lanthanum',57,138.905],['Ce','Cerium',58,140.116],['Pr','Praseodymium',59,140.908],['Nd','Neodymium',60,144.242],['Pm','Promethium',61,145],['Sm','Samarium',62,150.36],['Eu','Europium',63,151.964],['Gd','Gadolinium',64,157.25],['Tb','Terbium',65,158.925],['Dy','Dysprosium',66,162.5],['Ho','Holmium',67,164.93],['Er','Erbium',68,167.259],['Tm','Thulium',69,168.934],['Yb','Ytterbium',70,173.045],['Lu','Lutetium',71,174.967],['Hf','Hafnium',72,178.49],['Ta','Tantalum',73,180.948],['W','Tungsten',74,183.84],['Re','Rhenium',75,186.207],['Os','Osmium',76,190.23],['Ir','Iridium',77,192.217],['Pt','Platinum',78,195.084],['Au','Gold',79,196.967],['Hg','Mercury',80,200.592],['Tl','Thallium',81,204.38],['Pb','Lead',82,207.2],['Bi','Bismuth',83,208.98],['Po','Polonium',84,209],['At','Astatine',85,210],['Rn','Radon',86,222],['Fr','Francium',87,223],['Ra','Radium',88,226],['Ac','Actinium',89,227],['Th','Thorium',90,232.038],['Pa','Protactinium',91,231.036],['U','Uranium',92,238.029],['Np','Neptunium',93,237],['Pu','Plutonium',94,244],['Am','Americium',95,243],['Cm','Curium',96,247],['Bk','Berkelium',97,247],['Cf','Californium',98,251],['Es','Einsteinium',99,252],['Fm','Fermium',100,257],['Md','Mendelevium',101,258],['No','Nobelium',102,259],['Lr','Lawrencium',103,266],['Rf','Rutherfordium',104,267],['Db','Dubnium',105,268],['Sg','Seaborgium',106,269],['Bh','Bohrium',107,270],['Hs','Hassium',108,277],['Mt','Meitnerium',109,278],['Ds','Darmstadtium',110,281],['Rg','Roentgenium',111,282],['Cn','Copernicium',112,285],['Nh','Nihonium',113,286],['Fl','Flerovium',114,289],['Mc','Moscovium',115,290],['Lv','Livermorium',116,293],['Ts','Tennessine',117,294],['Og','Oganesson',118,294]];
+const $=id=>document.getElementById(id);
+let idx=0,paused=false,auto=true,speed=1,rx=.25,ry=0,zoom=1,drag=false,lx=0,ly=0;
+let scene,camera,renderer,root,electrons=[];
+const caps=[2,8,18,32,32,18,8];
+function shells(z){let out=[],n=z;for(const c of caps){let q=Math.min(c,n);if(q)out.push(q);n-=q;if(!n)break}return out}
+function init(){
+ try{
+  if(typeof THREE==='undefined') throw new Error('Three.js chưa tải được');
+  scene=new THREE.Scene();camera=new THREE.PerspectiveCamera(45,1,.1,100);camera.position.z=8;
+  renderer=new THREE.WebGLRenderer({canvas:$('scene'),antialias:true,alpha:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setClearColor(0x000000,0);
+  scene.add(new THREE.AmbientLight(0xffffff,1.8));let dl=new THREE.DirectionalLight(0xffffff,3.2);dl.position.set(4,5,8);scene.add(dl);
+  root=new THREE.Group();scene.add(root);resize();build();animate();
+ }catch(err){
+  console.error(err);
+  $('hint').textContent='Không tải được 3D. Đang dùng mô hình dự phòng.';
+  fallback2D();
+ }
+}
+function fallback2D(){
+ const c=$('scene'),ctx=c.getContext('2d'); if(!ctx)return;
+ let t0=performance.now(), angle=0;
+ function draw(){requestAnimationFrame(draw);let w=c.width=c.clientWidth*devicePixelRatio,h=c.height=c.clientHeight*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);w=c.clientWidth;h=c.clientHeight;ctx.clearRect(0,0,w,h);
+  const cx=w/2,cy=h/2,r0=Math.min(w,h)*.055; angle+=(paused?0:.01*speed);
+  ctx.save();ctx.translate(cx,cy);
+  const z=E[idx][2],sh=shells(z);
+  ctx.globalAlpha=.34;sh.forEach((_,i)=>{let r=90+i*55;ctx.beginPath();ctx.ellipse(0,0,r,r*.42,angle*.15+i*.4,0,Math.PI*2);ctx.strokeStyle='#4fdcff';ctx.lineWidth=1.5;ctx.stroke()});
+  for(let i=0;i<z;i++){let a=i*2.4,rr=r0*.72*Math.sqrt((i+1)/Math.max(z,1));ctx.beginPath();ctx.arc(Math.cos(a)*rr,Math.sin(a)*rr,5,0,Math.PI*2);ctx.fillStyle='#4fdcff';ctx.fill()}
+  const n=Math.max(0,Math.round(E[idx][3])-z);for(let i=0;i<n;i++){let a=i*2.4+.7,rr=r0*.66*Math.sqrt((i+1)/Math.max(n,1));ctx.beginPath();ctx.arc(Math.cos(a)*rr,Math.sin(a)*rr,5,0,Math.PI*2);ctx.fillStyle='#ff4f5f';ctx.fill()}
+  ctx.globalAlpha=1;ctx.beginPath();ctx.arc(0,0,Math.max(22,r0),0,Math.PI*2);ctx.fillStyle='rgba(255,79,95,.12)';ctx.fill();ctx.strokeStyle='rgba(255,79,95,.4)';ctx.stroke();
+  sh.forEach((count,i)=>{let r=90+i*55;for(let j=0;j<count;j++){let a=angle*(.5+i*.08)+j*Math.PI*2/count, x=Math.cos(a)*r, y=Math.sin(a)*r*.42;ctx.beginPath();ctx.arc(x,y,6,0,Math.PI*2);ctx.fillStyle='#4fdcff';ctx.fill()}});
+  ctx.restore();
+ } draw();
+}
+
+function build(){
+ while(root.children.length)root.remove(root.children[0]);electrons=[];
+ const [sym,name,z,mass]=E[idx],sh=shells(z);let coreR=Math.min(.62,.34+Math.sqrt(z)*.022);
+ let pc=Math.min(z,32),nc=Math.min(Math.max(0,Math.round(mass)-z),40);
+ for(let i=0;i<pc;i++){let a=i*2.399,r=coreR*.72*Math.sqrt((i+1)/pc),q=new THREE.Mesh(new THREE.SphereGeometry(.075,16,12),new THREE.MeshStandardMaterial({color:0x9aa3a8,emissive:0x9aa3a8,emissiveIntensity:.12}));q.position.set(Math.cos(a)*r,Math.sin(a)*r,(i%3-.9)*.08);root.add(q)}
+ for(let i=0;i<nc;i++){let a=i*2.399+.7,r=coreR*.66*Math.sqrt((i+1)/Math.max(nc,1)),q=new THREE.Mesh(new THREE.SphereGeometry(.07,16,12),new THREE.MeshBasicMaterial({color:0xff4f5f}));q.position.set(Math.cos(a)*r,Math.sin(a)*r,(i%4-1.5)*.07);root.add(q)}
+ root.add(new THREE.Mesh(new THREE.SphereGeometry(coreR,32,24),new THREE.MeshBasicMaterial({color:0xff5864,transparent:true,opacity:.12})));
+ sh.forEach((count,s)=>{let r=1.15+s*.55,ring=new THREE.Mesh(new THREE.TorusGeometry(r,.012,8,96),new THREE.MeshBasicMaterial({color:0x62e4f4,transparent:true,opacity:.42}));ring.rotation.set(s%2?.75:-.55,s%3?.25:0,0);root.add(ring);
+ for(let i=0;i<count;i++){let em=new THREE.Mesh(new THREE.SphereGeometry(.07,16,12),new THREE.MeshBasicMaterial({color:0x4fdcff}));em.userData={r,phase:i*Math.PI*2/count,tilt:ring.rotation.x,az:ring.rotation.y,shell:s};root.add(em);electrons.push(em)}});
+ update();$('select').value=idx;resize()
+}
+function update(){
+ const [sym,name,z,mass]=E[idx],sh=shells(z),ne=Math.max(0,Math.round(mass)-z);
+ $('symbol').textContent=sym;$('name').textContent=name;$('z').textContent=z;$('mass').textContent=mass;$('uses').textContent=USES[sym]||'Nghiên cứu và ứng dụng chuyên ngành';$('p').textContent=z;$('n').textContent=ne;$('e').textContent=z;$('shells').textContent=sh.length;$('mini').textContent=sym;$('cardName').textContent=name;$('cp').textContent=z;$('cn').textContent=ne;$('ce').textContent=z;$('config').textContent=electronConfig(z)
+}
+
+const USES = {
+H:"Nhiên liệu, amoniac, pin nhiên liệu và công nghiệp hóa chất",
+He:"Bóng bay, khí bảo vệ, MRI và làm lạnh sâu",
+Li:"Pin lithium-ion, thủy tinh, gốm và hợp kim",
+Be:"Hàng không vũ trụ, cửa sổ tia X và hợp kim đồng",
+B:"Thủy tinh borosilicat, chất tẩy rửa, vật liệu và bán dẫn",
+C:"Thép, than hoạt tính, điện cực, graphene và vật liệu carbon",
+N:"Sản xuất amoniac, phân bón, bảo quản thực phẩm và khí trơ",
+O:"Hô hấp y tế, luyện kim, hàn cắt và xử lý nước",
+F:"Kem đánh răng (fluoride), hóa chất fluor và vật liệu đặc biệt",
+Ne:"Đèn neon, biển hiệu và laser",
+Na:"Muối, hóa chất, đèn hơi natri và chất truyền nhiệt",
+Mg:"Hợp kim nhẹ, pháo sáng, ô tô và luyện kim",
+Al:"Đồ gia dụng, xây dựng, máy bay, dây dẫn điện và bao bì",
+Si:"Chip bán dẫn, pin mặt trời, thủy tinh và silicone",
+P:"Phân bón, diêm, hóa chất và chất chống cháy",
+S:"Axit sulfuric, phân bón, cao su và hóa chất",
+Cl:"Khử trùng nước, PVC, chất tẩy và hóa chất",
+Ar:"Hàn hồ quang, bóng đèn và môi trường khí trơ",
+K:"Phân bón, thủy tinh và hóa chất",
+Ca:"Xi măng, vôi, luyện kim và bổ sung canxi",
+Sc:"Hợp kim nhôm, đèn chiếu sáng và vật liệu đặc biệt",
+Ti:"Hợp kim hàng không, implant y tế, sơn TiO₂",
+V:"Thép hợp kim, dụng cụ và xúc tác",
+Cr:"Thép không gỉ, mạ crom và pigment",
+Mn:"Thép, pin và chất oxy hóa",
+Fe:"Thép, xây dựng, máy móc và nam châm",
+Co:"Pin, siêu hợp kim, nam châm và xúc tác",
+Ni:"Thép không gỉ, mạ, pin và xúc tác",
+Cu:"Dây điện, điện tử, ống và hợp kim đồng",
+Zn:"Mạ chống ăn mòn, pin, đồng thau và đúc",
+Ga:"LED, bán dẫn và nhiệt kế",
+Ge:"Bán dẫn, sợi quang và quang điện",
+As:"Bán dẫn, hợp kim và một số ứng dụng công nghiệp",
+Se:"Tế bào quang điện, kính và điện tử",
+Br:"Chất chống cháy, hóa chất và xử lý nước",
+Kr:"Đèn chiếu sáng, laser và khí cách điện",
+Rb:"Nghiên cứu, đồng hồ nguyên tử và thiết bị chân không",
+Sr:"Pháo hoa đỏ, vật liệu quang học và gốm",
+Y:"LED, laser, gốm và vật liệu siêu dẫn",
+Zr:"Hạt nhân, gốm và hợp kim chống ăn mòn",
+Nb:"Siêu hợp kim, thép và nam châm siêu dẫn",
+Mo:"Thép hợp kim, xúc tác và điện cực",
+Tc:"Chẩn đoán y học hạt nhân",
+Ru:"Điện tử, xúc tác và hợp kim",
+Rh:"Xúc tác ô tô, mạ và hợp kim",
+Pd:"Xúc tác, điện tử và lọc khí",
+Ag:"Trang sức, điện tử, gương và vật liệu kháng khuẩn",
+Cd:"Pin Ni-Cd, pigment và lớp phủ (hạn chế do độc tính)",
+In:"Màn hình cảm ứng, bán dẫn và hợp kim",
+Sn:"Hàn, mạ thiếc, hợp kim và bao bì",
+Sb:"Chất chống cháy, hợp kim và bán dẫn",
+Te:"Bán dẫn, hợp kim và vật liệu nhiệt điện",
+I:"Sát trùng, y tế và dinh dưỡng vi lượng",
+Xe:"Đèn flash, đèn pha, laser và gây mê chuyên dụng",
+Cs:"Đồng hồ nguyên tử, nghiên cứu và thiết bị chân không",
+Ba:"Pháo hoa xanh, khoan dầu và chất cản quang y tế",
+La:"Kính quang học, xúc tác và pin",
+Ce:"Đánh bóng kính, xúc tác và hợp kim",
+Pr:"Nam châm, kính màu và vật liệu quang học",
+Nd:"Nam châm mạnh, laser và động cơ điện",
+Pm:"Nghiên cứu và nguồn phóng xạ chuyên dụng",
+Sm:"Nam châm, lò phản ứng và laser",
+Eu:"Phosphor màn hình, đèn và bảo mật tiền giấy",
+Gd:"MRI, vật liệu từ và lò phản ứng",
+Tb:"Phosphor xanh, thiết bị điện tử và nam châm",
+Dy:"Nam châm mạnh và vật liệu laser",
+Ho:"Laser, nam châm và nghiên cứu vật liệu",
+Er:"Sợi quang, laser và kính màu",
+Tm:"Nguồn tia X di động và laser",
+Yb:"Laser, sợi quang và nghiên cứu",
+Lu:"Xúc tác, y học hạt nhân và vật liệu",
+Hf:"Lò phản ứng, siêu hợp kim và điện tử",
+Ta:"Tụ điện, dụng cụ y tế và siêu hợp kim",
+W:"Dây tóc bóng đèn, dụng cụ cắt và hợp kim chịu nhiệt",
+Re:"Siêu hợp kim động cơ phản lực và xúc tác",
+Os:"Hợp kim cứng, đầu bút và xúc tác",
+Ir:"Bugi, hợp kim và thiết bị chịu nhiệt",
+Pt:"Xúc tác ô tô, trang sức, điện tử và y tế",
+Au:"Trang sức, điện tử, nha khoa và đầu tư",
+Hg:"Thiết bị đo cũ, công tắc và hóa chất (độc, hạn chế)",
+Tl:"Điện tử, cảm biến và nghiên cứu (độc)",
+Pb:"Ắc quy chì, chắn bức xạ và hợp kim (độc)",
+Bi:"Dược phẩm, hợp kim nóng chảy và mỹ phẩm",
+Po:"Nguồn nhiệt phóng xạ và nghiên cứu (phóng xạ)",
+At:"Nghiên cứu y học hạt nhân (phóng xạ)",
+Rn:"Nghiên cứu phóng xạ; không dùng dân dụng do nguy hiểm",
+Fr:"Nghiên cứu cơ bản (phóng xạ, cực hiếm)",
+Ra:"Nghiên cứu và y học lịch sử; phóng xạ mạnh",
+Ac:"Nghiên cứu và nguồn alpha; phóng xạ",
+Th:"Nhiên liệu hạt nhân tiềm năng và nghiên cứu",
+Pa:"Nghiên cứu hạt nhân",
+U:"Nhiên liệu hạt nhân, điện hạt nhân và nghiên cứu",
+Np:"Nghiên cứu và sản xuất đồng vị",
+Pu:"Nhiên liệu hạt nhân và nguồn năng lượng đặc biệt",
+Am:"Máy dò khói và nguồn neutron; phóng xạ",
+Cm:"Nghiên cứu hạt nhân và nguồn alpha",
+Bk:"Nghiên cứu hạt nhân",
+Cf:"Nguồn neutron và nghiên cứu hạt nhân",
+Es:"Nghiên cứu hạt nhân",
+Fm:"Nghiên cứu hạt nhân",
+Md:"Nghiên cứu hạt nhân",
+No:"Nghiên cứu hạt nhân",
+Lr:"Nghiên cứu hạt nhân",
+Rf:"Nghiên cứu nguyên tố siêu nặng",
+Db:"Nghiên cứu nguyên tố siêu nặng",
+Sg:"Nghiên cứu nguyên tố siêu nặng",
+Bh:"Nghiên cứu nguyên tố siêu nặng",
+Hs:"Nghiên cứu nguyên tố siêu nặng",
+Mt:"Nghiên cứu nguyên tố siêu nặng",
+Ds:"Nghiên cứu nguyên tố siêu nặng",
+Rg:"Nghiên cứu nguyên tố siêu nặng",
+Cn:"Nghiên cứu nguyên tố siêu nặng",
+Nh:"Nghiên cứu nguyên tố siêu nặng",
+Fl:"Nghiên cứu nguyên tố siêu nặng",
+Mc:"Nghiên cứu nguyên tố siêu nặng",
+Lv:"Nghiên cứu nguyên tố siêu nặng",
+Ts:"Nghiên cứu nguyên tố siêu nặng",
+Og:"Nghiên cứu nguyên tố siêu nặng"
+};
+const PERIOD = {
+1:{1:1,18:2},
+2:{1:3,2:4,13:5,14:6,15:7,16:8,17:9,18:10},
+3:{1:11,2:12,13:13,14:14,15:15,16:16,17:17,18:18},
+4:{1:19,2:20,3:21,4:22,5:23,6:24,7:25,8:26,9:27,10:28,11:29,12:30,13:31,14:32,15:33,16:34,17:35,18:36},
+5:{1:37,2:38,3:39,4:40,5:41,6:42,7:43,8:44,9:45,10:46,11:47,12:48,13:49,14:50,15:51,16:52,17:53,18:54},
+6:{1:55,2:56,3:57,4:72,5:73,6:74,7:75,8:76,9:77,10:78,11:79,12:80,13:81,14:82,15:83,16:84,17:85,18:86},
+7:{1:87,2:88,3:89,4:104,5:105,6:106,7:107,8:108,9:109,10:110,11:111,12:112,13:113,14:114,15:115,16:116,17:117,18:118}
+};
+const FROWS = {58:9,59:10,60:11,61:12,62:13,63:14,64:15,65:16,66:17,67:18,68:1,69:2,70:3,71:4,90:9,91:10,92:11,93:12,94:13,95:14,96:15,97:16,98:17,99:18,100:1,101:2,102:3,103:4};
+function electronConfig(z){
+ const order=[['1s',2],['2s',2],['2p',6],['3s',2],['3p',6],['4s',2],['3d',10],['4p',6],['5s',2],['4d',10],['5p',6],['6s',2],['4f',14],['5d',10],['6p',6],['7s',2],['5f',14],['6d',10],['7p',6]];
+ let n=z,out=[];for(const [orb,cap] of order){if(n<=0)break;let q=Math.min(cap,n);out.push(orb+q);n-=q}return out.join(' ')
+}
+function select(i){idx=(i+E.length)%E.length;$('select').value=idx;document.querySelectorAll('.el').forEach((x,j)=>x.classList.toggle('active',j===idx));build()}
+function category(z,sym){
+ if([3,11,19,37,55,87].includes(z)) return 'alkali';
+ if([4,12,20,38,56,88].includes(z)) return 'alkaline';
+ if(z>=57&&z<=71||z>=89&&z<=103) return 'f';
+ if((z>=21&&z<=30)||(z>=39&&z<=48)||(z>=72&&z<=80)||(z>=104&&z<=112)) return 'transition';
+ if([5,14,32,33,51,52].includes(z)) return 'metalloid';
+ if([13,31,49,50,81,82,83,84,113,114,115,116].includes(z)) return 'post';
+ if([9,17,35,53,85,117].includes(z)) return 'halogen';
+ if([2,10,18,36,54,86,118].includes(z)) return 'noble';
+ return 'nonmetal';
+}
+const layout = {
+1:{1:1,18:2},
+2:{1:3,2:4,13:5,14:6,15:7,16:8,17:9,18:10},
+3:{1:11,2:12,13:13,14:14,15:15,16:16,17:17,18:18},
+4:{1:19,2:20,3:21,4:22,5:23,6:24,7:25,8:26,9:27,10:28,11:29,12:30,13:31,14:32,15:33,16:34,17:35,18:36},
+5:{1:37,2:38,3:39,4:40,5:41,6:42,7:43,8:44,9:45,10:46,11:47,12:48,13:49,14:50,15:51,16:52,17:53,18:54},
+6:{1:55,2:56,4:72,5:73,6:74,7:75,8:76,9:77,10:78,11:79,12:80,13:81,14:82,15:83,16:84,17:85,18:86},
+7:{1:87,2:88,4:104,5:105,6:106,7:107,8:108,9:109,10:110,11:111,12:112,13:113,14:114,15:115,16:116,17:117,18:118}
+};
+const fRows = [[57,58,59,60,61,62,63,64,65,66,67,68,69,70,71],[89,90,91,92,93,94,95,96,97,98,99,100,101,102,103]];
+E.forEach((x,i)=>{let o=document.createElement('option');o.value=i;o.textContent=`${x[2]} · ${x[0]} — ${x[1]}`;$('select').appendChild(o)});
+$('groupLabels').innerHTML=Array.from({length:18},(_,i)=>'<span>'+(i+1)+'</span>').join('');
+for(let p=1;p<=7;p++){let d=document.createElement('div');d.className='period';d.style.gridColumn='1';d.style.gridRow=String(p);d.textContent=p;$('periodic').appendChild(d)}
+for(let r=1;r<=7;r++){for(let c=1;c<=18;c++){let z=layout[r][c];if(r>=6&&c===3){let ph=document.createElement('div');ph.className='placeholder';ph.style.gridColumn='4';ph.style.gridRow=String(r);ph.innerHTML='<b>'+(r===6?'57–71':'89–103')+'</b><small>'+(r===6?'Lanthanide':'Actinide')+'</small>';$('periodic').appendChild(ph)}else if(z){let x=E[z-1],b=document.createElement('button');b.className='el cat-'+category(z,x[0]);b.style.gridColumn=String(c+1);b.style.gridRow=String(r);b.innerHTML='<span class="z">'+x[2]+'</span><b>'+x[0]+'</b><small>'+x[1]+'</small>';b.onclick=()=>{select(z-1);$('tablePanel').classList.remove('show')};$('periodic').appendChild(b)}}}
+fRows.forEach((row,ri)=>row.forEach((z,i)=>{let x=E[z-1],b=document.createElement('button');b.className='el cat-f';b.style.gridColumn=String(i+4);b.style.gridRow=String(9+ri);b.innerHTML='<span class="z">'+x[2]+'</span><b>'+x[0]+'</b><small>'+x[1]+'</small>';b.onclick=()=>{select(z-1);$('tablePanel').classList.remove('show')};$('periodic').appendChild(b)}));
+
+$('select').onchange=e=>select(+e.target.value);$('minus').onclick=()=>select(idx-1);$('plus').onclick=()=>select(idx+1);
+$('speed').oninput=e=>speed=+e.target.value;$('pause').onclick=()=>{paused=!paused;$('pause').textContent=paused?'▶':'Ⅱ'};$('auto').onclick=()=>auto=!auto;$('reset').onclick=()=>{rx=.25;ry=0;zoom=1};
+$('tableBtn').onclick=()=>{$('tablePanel').classList.toggle('show');$('aboutPanel').classList.remove('show')};$('aboutBtn').onclick=()=>{$('aboutPanel').classList.toggle('show');$('tablePanel').classList.remove('show')};$('atomBtn').onclick=()=>{$('tablePanel').classList.remove('show');$('aboutPanel').classList.remove('show')};
+$('scene').addEventListener('pointerdown',e=>{drag=true;lx=e.clientX;ly=e.clientY;$('scene').setPointerCapture(e.pointerId)});$('scene').addEventListener('pointermove',e=>{if(!drag)return;ry+=(e.clientX-lx)*.008;rx+=(e.clientY-ly)*.008;lx=e.clientX;ly=e.clientY});$('scene').addEventListener('pointerup',()=>drag=false);
+$('scene').addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.55,Math.min(2.2,zoom-e.deltaY*.001))},{passive:false});
+function resize(){let w=$('scene').clientWidth,h=$('scene').clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}addEventListener('resize',resize);
+function animate(){requestAnimationFrame(animate);if(!paused&&auto)ry+=.004*speed;root.rotation.x=rx;root.rotation.y=ry;camera.position.z=8/zoom;let t=performance.now()/1000;electrons.forEach(e=>{let u=e.userData,a=t*(.45+u.shell*.07)*speed+u.phase,v=new THREE.Vector3(Math.cos(a)*u.r,Math.sin(a)*u.r,0);v.applyEuler(new THREE.Euler(u.tilt,u.az,0));e.position.copy(v)});renderer.render(scene,camera)}
+init();
+</script>
+</body>
+</html>
